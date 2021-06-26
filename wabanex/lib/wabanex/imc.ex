@@ -1,22 +1,22 @@
 defmodule Wabanex.IMC do
-  def calculate(filename) do
+  def calculate(%{"filename" => filename}) do
     # functional programming
     filename
     |> File.read()
     |> handle_file()
-    # old way
-    """
-    result = File.read(filename)
-    handle_file(result)
-    """
+
   end
 
   defp handle_file({:ok, content}) do
-    content
-    |> String.split("\n")
-    |> Enum.map(fn line -> parse_line(line) end)
-    |> Enum.into(%{})
-    |>IO.inspect()
+    data =
+      content
+      |> String.split("\n")
+      |> Enum.map(fn line -> parse_line(line) end)
+      |> Enum.into(%{})
+
+    {:ok, data}
+    # usado para mostrar saída
+    #|>IO.inspect()
   end
 
   defp handle_file({:error}) do
@@ -34,6 +34,10 @@ defmodule Wabanex.IMC do
   end
 
   defp calculate_imc([name, height, weight]), do: {name, weight/(height*height)}
+
+  # old way
+  # result = File.read(filename)
+  # handle_file(result)
 
 
 
